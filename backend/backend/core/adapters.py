@@ -10,8 +10,8 @@ if typing.TYPE_CHECKING:
     from django.http import HttpRequest
 
 
-class AccountAdapter(DefaultAccountAdapter):
-    def is_open_for_signup(self: AccountAdapter, request: HttpRequest) -> bool:  # noqa: ARG002
+class AccountAdapter(DefaultAccountAdapter):  # noqa: D101
+    def is_open_for_signup(self: AccountAdapter, request: HttpRequest) -> bool:  # noqa: ARG002, D102
         return getattr(settings, "ACCOUNT_ALLOW_REGISTRATION", True)
 
 

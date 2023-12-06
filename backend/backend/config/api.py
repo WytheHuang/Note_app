@@ -1,6 +1,5 @@
 from ninja_extra import NinjaExtraAPI
 
-
 from config.auth import AuthController
 
 

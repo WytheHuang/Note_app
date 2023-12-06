@@ -10,6 +10,8 @@ from .models import User
 
 
 class UserAdminChangeForm(admin_forms.UserChangeForm):
+    """Form for User Change in the Admin Area."""
+
     class Meta(admin_forms.UserChangeForm.Meta):
         model = User
         field_classes: ClassVar = {"email": EmailField}

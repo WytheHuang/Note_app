@@ -1,12 +1,11 @@
 import uuid
-
 from datetime import datetime
 from typing import Any
 from typing import ClassVar
 
+import pytz
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
-
 from django.db import models
 from django.utils import timezone
 
@@ -76,7 +75,7 @@ class User(AbstractUser):
         """
         self.is_delete = True
         self.is_active = False
-        self.deleted_at = datetime.now()
+        self.deleted_at = datetime.now(tz=pytz.timezone("Asia/Taipei"))
         self.save()
 
 
@@ -204,5 +203,5 @@ class BaseModel(models.Model):
         """
         self.is_delete = True
         self.deleted_by_user = user
-        self.deleted_at = datetime.now()
+        self.deleted_at = datetime.now(tz=pytz.timezone("Asia/Taipei"))
         self.save(user)

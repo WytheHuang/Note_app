@@ -5,14 +5,21 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
-
+from django.shortcuts import redirect
 
 from .api import api
+
+
+def redirect_to_admin(request):
+    return redirect("admin/")
+
 
 urlpatterns = [
     path("jet/", include("jet.urls", "jet")),
     path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
     path("admin/", admin.site.urls),
+    #
+    path("", redirect_to_admin),
     #
     path("accounts/", include("allauth.urls")),
     #

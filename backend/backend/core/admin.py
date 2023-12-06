@@ -1,11 +1,7 @@
-from typing import Any
 from typing import ClassVar
 
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
-from django.db.models.fields.related import ForeignKey
-from django.forms.models import ModelChoiceField
-from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from .forms import UserAdminChangeForm
@@ -15,8 +11,6 @@ from .models import User
 
 class BaseAdmin(admin.ModelAdmin):
     """Base admin class for all models."""
-
-    ...
 
 
 @admin.register(User)
