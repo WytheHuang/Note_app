@@ -1,0 +1,97 @@
+[tool.poetry]
+authors = ["Wythe Huang <wythehuang@icloud.com>"]
+description = ""
+name = "note-app-backend"
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+django-ninja-extra = "^0.20.0"
+django-ninja-jwt = "^5.2.10"
+python = "^3.11"
+python-dotenv = "^1.0.0"
+django = "^4.2.8"
+django-debug-toolbar = "^4.2.0"
+django-extensions = "^3.2.3"
+django-cors-headers = "^4.3.1"
+django-allauth = "^0.58.2"
+djangorestframework = "^3.14.0"
+argon2-cffi = "^23.1.0"
+six = "^1.16.0"
+feedparser = "^6.0.10"
+
+[tool.poetry.group.lint.dependencies]
+black = "^23.11.0"
+pyright = "^1.1.338"
+ruff = "^0.1.7"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.ruff]
+exclude = [
+  ".venv",
+  "_venv",
+  "venv",
+  ".git",
+  ".vscode",
+  "jet",
+  "*/migrations/*",
+]
+ignore = [
+  # https://docs.astral.sh/ruff/rules/#rules
+  "D100",
+  "D104",
+  "D106",
+  "E501",
+  "DJ001",
+  "Q000",
+  "TID252",
+  "ERA",
+  "TCH",
+  "EM102",
+  "PGH003",
+  "ANN101",
+  "ANN102",
+  "ANN201",
+  "ANN401",
+  "TRY003",
+  "EM101",
+  "TD003",
+  "A003",
+]
+line-length = 120
+select = [
+  # https://docs.astral.sh/ruff/rules/#rules
+  "ALL",
+]
+target-version = "py311"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.isort]
+force-single-line = true
+lines-after-imports = 2
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+
+[tool.pyright]
+exclude = [
+  ".venv",
+  "_venv",
+  "venv",
+  ".git",
+  ".vscode",
+  "jet",
+  "*/migrations/*",
+]
+pythonVersion = "3.11"
+reportUnnecessaryTypeIgnoreComment = true
+typeCheckingMode = "basic"
