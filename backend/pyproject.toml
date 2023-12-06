@@ -19,6 +19,8 @@ djangorestframework = "^3.14.0"
 argon2-cffi = "^23.1.0"
 six = "^1.16.0"
 feedparser = "^6.0.10"
+uvicorn = "^0.24.0.post1"
+colorlog = "^6.8.0"
 
 [tool.poetry.group.lint.dependencies]
 black = "^23.11.0"

@@ -2,15 +2,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.shortcuts import redirect
 from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
-from django.shortcuts import redirect
+from django.core.handlers.asgi import ASGIRequest
 
 from .api import api
 
 
-def redirect_to_admin(request):
+def redirect_to_admin(request: ASGIRequest):
+    """Redirect to admin.
+
+    Args:
+        request (ASGIRequest): request
+    """
     return redirect("admin/")
 
 
@@ -26,7 +32,7 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
     #
-    path("api/", api.urls),  # type: ignore
+    path("api/", api.urls, name="api_root"),  # type: ignore
 ]
 
 if settings.DEBUG:
