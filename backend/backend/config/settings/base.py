@@ -70,6 +70,7 @@ APPS = [
 ]
 LOCAL_APPS = [
     "core",
+    "note",
 ]
 INSTALLED_APPS = APPS + LOCAL_APPS
 

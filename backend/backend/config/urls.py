@@ -11,21 +11,12 @@ from django.views import defaults as default_views
 from .api import api
 
 
-def redirect_to_admin(request: ASGIRequest):  # noqa: ARG001
-    """Redirect to admin.
-
-    Args:
-        request (ASGIRequest): request
-    """
-    return redirect("admin/")
-
-
 urlpatterns = [
     path("jet/", include("jet.urls", "jet")),
     path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
     path("admin/", admin.site.urls),
     #
-    path("", redirect_to_admin),
+    path("", lambda request: redirect("admin/")),
     #
     path("accounts/", include("allauth.urls")),
     #

@@ -7,5 +7,4 @@ BASE_EXCLUDE_FIELD = [
     "is_delete",
     "deleted_at",
     "deleted_by_user",
-    "company",
 ]

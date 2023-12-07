@@ -5,6 +5,7 @@ from uuid import UUID
 
 from django.contrib.auth.models import AnonymousUser
 from django.core.handlers.wsgi import WSGIRequest
+from django.core.handlers.asgi import ASGIRequest
 from django.db.models.base import ModelBase
 from ninja.orm.metaclass import ModelSchemaMetaclass
 from ninja.schema import ResolverMetaclass
@@ -43,47 +44,45 @@ class BaseEditApiController:
     PutModelRequestSchema: ModelSchemaMetaclass | ResolverMetaclass | None = None
     GetModelResponseSchema: ModelSchemaMetaclass | ResolverMetaclass | None = None
 
-    def create(self, request: WSGIRequest, body: CreateModelRequestSchema) -> dict[str, Any]:  # type: ignore
+    def create(self, request: WSGIRequest | ASGIRequest, body: CreateModelRequestSchema) -> GetModelResponseSchema:  # type: ignore
         """Create object.
 
         Args:
-            request (WSGIRequest): HTTP request.
+            request (WSGIRequest|ASGIRequest): HTTP request.
             body (CreateModelRequestSchema): Request body. must be a pydantic model.
 
         Returns:
             dict[str, Any]: response body. must be json serializable. typically {"msg": "success"}.
         """
-        company_id = request.user.company_id  # type: ignore
+        if isinstance(request.user, AnonymousUser):
+            raise Http401UnauthorizedException
 
-        q = self.Model(  # type: ignore
+        model = self.Model(  # type: ignore
             **body.dict(),
-            company_id=company_id,
         )
 
-        q.create(request.user)
+        model.create(request.user)
 
-        return q
+        return model
 
-    def get_all(self, request: WSGIRequest) -> list[GetModelResponseSchema]:  # type: ignore
+    def get_all(self, request: WSGIRequest | ASGIRequest) -> list[GetModelResponseSchema]:  # type: ignore
         """Get all objects belong to the user's company.
 
         Args:
-            request (WSGIRequest): HTTP request.
+            request (WSGIRequest|ASGIRequest): HTTP request.
 
         Returns:
             list[GetModelResponseSchema]: list of objects. must be json serializable.
         """
-        company_id = request.user.company_id  # type: ignore
+        model = self.Model.objects.filter(created_by_user_id=request.user.id).values()  # type: ignore
 
-        q = self.Model.objects.filter(company_id=company_id).values()  # type: ignore
+        return list(model)
 
-        return list(q)
-
-    def get(self, request: WSGIRequest, pk: UUID) -> GetModelResponseSchema:  # type: ignore
+    def get(self, request: WSGIRequest | ASGIRequest, pk: UUID) -> GetModelResponseSchema:  # type: ignore
         """Get object by primary key.
 
         Args:
-            request (WSGIRequest): HTTP request.
+            request (WSGIRequest|ASGIRequest): HTTP request.
             pk (int): primary key value of the object.
 
         Raises:
@@ -96,19 +95,19 @@ class BaseEditApiController:
             raise Http401UnauthorizedException
 
         try:
-            q = self.Model.objects.get(  # type: ignore
+            model = self.Model.objects.get(  # type: ignore
                 id=pk,
             )
         except self.Model.DoesNotExist as err:  # type: ignore
             raise Http404NotFoundException from err
 
-        return q
+        return model
 
-    def update(self, request: WSGIRequest, pk: UUID, body: PutModelRequestSchema) -> dict[str, Any]:  # type: ignore
+    def update(self, request: WSGIRequest | ASGIRequest, pk: UUID, body: PutModelRequestSchema):  # type: ignore
         """Update object by primary key.
 
         Args:
-            request (WSGIRequest): HTTP request.
+            request (WSGIRequest|ASGIRequest): HTTP request.
             pk (int): primary key value of the object.
             body (PutModelRequestSchema): new values of the object.
 
@@ -134,13 +133,13 @@ class BaseEditApiController:
 
         model.save(request.user)
 
-        return {"msg": "success"}
+        return model
 
-    def delete(self, request: WSGIRequest, pk: UUID) -> dict[str, Any]:
+    def delete(self, request: WSGIRequest | ASGIRequest, pk: UUID) -> dict[str, Any]:
         """Delete object by primary key.
 
         Args:
-            request (WSGIRequest): HTTP request.
+            request (WSGIRequest|ASGIRequest): HTTP request.
             pk (int): primary key value of the object.
 
         Raises:
@@ -154,13 +153,13 @@ class BaseEditApiController:
             raise Http401UnauthorizedException
 
         try:
-            q = self.Model.objects.get(  # type: ignore
+            model = self.Model.objects.get(  # type: ignore
                 id=pk,
             )
         except self.Model.DoesNotExist as err:  # type: ignore
             raise Http404NotFoundException from err
 
-        q.delete(request.user)
+        model.delete(request.user)
 
         return {"msg": "success"}
 
@@ -170,11 +169,11 @@ class CoreController:
     """api controller for example."""
 
     @route.get("/example/")
-    def example_api(self, request: WSGIRequest) -> dict[str, str]:
+    def example_api(self, request: WSGIRequest | ASGIRequest) -> dict[str, str]:
         """Example api.
 
         Args:
-            request (WSGIRequest): http request.
+            request (WSGIRequest|ASGIRequest): http request.
 
         Returns:
             dict: a dict with some info. must be json serializable for response.

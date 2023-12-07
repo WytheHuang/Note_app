@@ -4,6 +4,7 @@ from ninja_extra import NinjaExtraAPI
 
 from config.auth import AuthController
 
+from note import apis as note_apis
 
 api = NinjaExtraAPI(
     title="Note App Backend",
@@ -11,14 +12,28 @@ api = NinjaExtraAPI(
     description="Note App in django",
     app_name="backend",
     docs=Redoc(),
-    docs_url="/docs",
+    docs_url="docs/",
 )
 
 
-@api.get("/")
-async def api_check_helth(request: HttpRequest):  # noqa: ARG001
+@api.get(
+    "",
+    tags=["health_check"],
+)
+async def api_root_health_check(request: HttpRequest):  # noqa: ARG001
+    """Check api health."""
+    return {"status": "healthy"}
+
+
+@api.get(
+    "health_check/",
+    tags=["health_check"],
+)
+async def health_check(request: HttpRequest):  # noqa: ARG001
     """Check api health."""
     return {"status": "healthy"}
 
 
 api.register_controllers(AuthController)
+
+api.register_controllers(note_apis.NoteBookController)
