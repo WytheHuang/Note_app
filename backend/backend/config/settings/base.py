@@ -33,18 +33,6 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 
 # DATABASES
 # ------------------------------------------------------------------------------
-DATABASES = {
-    "default": {
-        # "ENGINE": "django.db.backends.postgresql",
-        # "NAME": os.environ.get("POSTGRES_DB"),
-        # "USER": os.environ.get("POSTGRES_USER"),
-        # "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        # "HOST": os.environ.get("POSTGRES_HOST"),
-        # "PORT": os.environ.get("POSTGRES_PORT"),
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ROOT_DIR / "db.sqlite3",
-    },
-}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SILENCED_SYSTEM_CHECKS = [
     # Allow index names >30 characters, because we are not using Oracle
@@ -193,7 +181,6 @@ ADMIN_URL = "admin/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
 # See https://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-DJANGO_COLORS = "light"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
