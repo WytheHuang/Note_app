@@ -1,10 +1,10 @@
 from django.http import HttpRequest
 from ninja.openapi.docs import Redoc
 from ninja_extra import NinjaExtraAPI
+from note import apis as note_apis
 
 from config.auth import AuthController
 
-from note import apis as note_apis
 
 api = NinjaExtraAPI(
     title="Note App Backend",

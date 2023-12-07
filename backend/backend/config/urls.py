@@ -2,7 +2,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.core.handlers.asgi import ASGIRequest
 from django.shortcuts import redirect
 from django.urls import include
 from django.urls import path
@@ -16,7 +15,7 @@ urlpatterns = [
     path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
     path("admin/", admin.site.urls),
     #
-    path("", lambda request: redirect("admin/")),
+    path("", lambda request: redirect("admin/")),  # noqa: ARG005
     #
     path("accounts/", include("allauth.urls")),
     #

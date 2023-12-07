@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from core.utils import BASE_EXCLUDE_FIELD
 from ninja import ModelSchema
 
@@ -41,7 +43,7 @@ class GetNoteBookResponseSchema(ModelSchema):
 
     class Meta:
         model = models.NoteBookModel
-        exclude = [
+        exclude: ClassVar = [
             "created_at",
             "created_by_user",
             "updated_at",

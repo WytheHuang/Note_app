@@ -4,8 +4,8 @@ from typing import Any
 from uuid import UUID
 
 from django.contrib.auth.models import AnonymousUser
-from django.core.handlers.wsgi import WSGIRequest
 from django.core.handlers.asgi import ASGIRequest
+from django.core.handlers.wsgi import WSGIRequest
 from django.db.models.base import ModelBase
 from ninja.orm.metaclass import ModelSchemaMetaclass
 from ninja.schema import ResolverMetaclass

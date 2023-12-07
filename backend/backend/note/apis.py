@@ -1,18 +1,14 @@
+from typing import Any
 from uuid import UUID
 
-from typing import Any
-from django.contrib.auth.models import AnonymousUser
-
+from asgiref.sync import sync_to_async
 from core import schemas as core_schemas
-from core import exceptions as core_exceptions
 from core.apis import BaseEditApiController
 from django.core.handlers.asgi import ASGIRequest
 from ninja_extra import api_controller
 from ninja_extra import route
 from ninja_extra.permissions import IsAuthenticated
 from ninja_jwt.authentication import AsyncJWTAuth as JWTAuth
-
-from asgiref.sync import sync_to_async
 
 from . import models
 from . import schemas
@@ -25,6 +21,8 @@ from . import schemas
     permissions=[IsAuthenticated],
 )
 class NoteBookController(BaseEditApiController):
+    """NoteBookModel edit api controller."""
+
     Model = models.NoteBookModel
 
     @route.post(
@@ -36,7 +34,6 @@ class NoteBookController(BaseEditApiController):
     )
     async def create(self, request: ASGIRequest, body: schemas.PostNoteBookRequestSchema) -> schemas.PutNoteBookResponseSchema:
         """Create note book."""
-
         return await sync_to_async(super().create)(request=request, body=body)
 
     @route.get(
