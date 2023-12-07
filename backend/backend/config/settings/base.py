@@ -1,10 +1,10 @@
 """Base settings to build other settings files upon."""
 import os
-import pytz
 from datetime import datetime
 from datetime import timedelta
 from pathlib import Path
 
+import pytz
 from dotenv import load_dotenv
 
 

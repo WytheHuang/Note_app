@@ -15,7 +15,7 @@ ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]  # noqa: S104
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ROOT_DIR / "db.sqlite3",
+        "NAME": ROOT_DIR / "db.sqlite3",  # noqa: F405
     },
 }
 

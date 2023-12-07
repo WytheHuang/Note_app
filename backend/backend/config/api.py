@@ -1,8 +1,4 @@
 from django.http import HttpRequest
-from django.http.response import StreamingHttpResponse
-from django.db.transaction import non_atomic_requests
-from asgiref.sync import sync_to_async
-
 from ninja.openapi.docs import Redoc
 from ninja_extra import NinjaExtraAPI
 
@@ -20,8 +16,8 @@ api = NinjaExtraAPI(
 
 
 @api.get("/")
-@non_atomic_requests
-async def api_check_helth(request: HttpRequest):
+async def api_check_helth(request: HttpRequest):  # noqa: ARG001
+    """Check api health."""
     return {"status": "healthy"}
 
 

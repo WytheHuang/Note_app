@@ -2,16 +2,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.core.handlers.asgi import ASGIRequest
 from django.shortcuts import redirect
 from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
-from django.core.handlers.asgi import ASGIRequest
 
 from .api import api
 
 
-def redirect_to_admin(request: ASGIRequest):
+def redirect_to_admin(request: ASGIRequest):  # noqa: ARG001
     """Redirect to admin.
 
     Args:
