@@ -3,6 +3,8 @@ import sys
 import warnings
 from pathlib import Path
 
+import uvicorn
+
 
 warnings.filterwarnings("ignore")
 
@@ -12,8 +14,6 @@ if __name__ == "__main__":
 
     current_path = Path(__file__).parent.resolve()
     sys.path.append(str(current_path / "backend"))
-
-    import uvicorn
 
     uvicorn.run(
         app="backend.config.asgi:application",
