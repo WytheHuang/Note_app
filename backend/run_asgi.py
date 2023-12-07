@@ -21,8 +21,8 @@ if __name__ == "__main__":
             app="backend.config.asgi:application",
             host=os.environ.get("SERVER_HOST", default="127.0.0.1"),
             port=int(os.environ.get("SERVER_PORT", default=8000)),
-            reload=True,
             env_file=os.environ.get("DOT_ENV_PATH", default=f".env.local"),
+            reload=True,
         )
     except Exception as e:
         raise e
