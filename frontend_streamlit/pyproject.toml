@@ -8,6 +8,7 @@ version = "0.1.0"
 [tool.poetry.dependencies]
 python = "^3.11"
 streamlit = "^1.29.0"
+watchdog = "^3.0.0"
 
 [tool.poetry.group.lint.dependencies]
 black = "^23.11.0"
