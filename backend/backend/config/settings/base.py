@@ -206,7 +206,7 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "ERROR",
+            "level": "CRITICAL",
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },

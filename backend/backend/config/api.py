@@ -37,3 +37,4 @@ async def health_check(request: HttpRequest):  # noqa: ARG001
 api.register_controllers(AuthController)
 
 api.register_controllers(note_apis.NoteBookController)
+api.register_controllers(note_apis.NoteController)

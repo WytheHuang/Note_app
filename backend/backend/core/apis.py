@@ -162,25 +162,3 @@ class BaseEditApiController:
         model.delete(request.user)
 
         return {"msg": "success"}
-
-
-@api_controller(permissions=[IsAuthenticated], auth=JWTAuth(), prefix_or_class="core/")
-class CoreController:
-    """api controller for example."""
-
-    @route.get("/example/")
-    def example_api(self, request: WSGIRequest | ASGIRequest) -> dict[str, str]:
-        """Example api.
-
-        Args:
-            request (WSGIRequest|ASGIRequest): http request.
-
-        Returns:
-            dict: a dict with some info. must be json serializable for response.
-        """
-        user_id = getattr(request.user, "id", None)
-        company_id = getattr(request.user, "company_id", None)
-        return {
-            "u_id_type": str(type(user_id)),
-            "c_id": str(company_id),
-        }

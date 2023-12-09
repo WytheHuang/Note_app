@@ -48,9 +48,9 @@ class NoteModel(BaseModel):
     title = models.CharField(max_length=255)
     content = models.TextField()
     is_archived = models.BooleanField(default=False)
-    is_pinned = models.BooleanField(default=False)
+    is_trash = models.BooleanField(default=False)
 
-    belongs_to = models.ForeignKey(NoteBookModel, on_delete=models.CASCADE)
+    note_book = models.ForeignKey(NoteBookModel, on_delete=models.CASCADE, default=None, null=True, blank=True)
 
     class PermissionOptions(models.IntegerChoices):
         """Permission options."""

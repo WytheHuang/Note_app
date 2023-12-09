@@ -1,7 +1,9 @@
 from typing import ClassVar
+from uuid import UUID
 
 from core.utils import BASE_EXCLUDE_FIELD
 from ninja import ModelSchema
+from ninja import Schema
 
 from . import models
 
@@ -11,7 +13,7 @@ class PostNoteBookRequestSchema(ModelSchema):
 
     class Meta:
         model = models.NoteBookModel
-        exclude = BASE_EXCLUDE_FIELD
+        exclude = ["id"] + BASE_EXCLUDE_FIELD
 
 
 class PostNoteBookResponseSchema(ModelSchema):
@@ -27,7 +29,7 @@ class PutNoteBookRequestSchema(ModelSchema):
 
     class Meta:
         model = models.NoteBookModel
-        exclude = BASE_EXCLUDE_FIELD
+        exclude = ["id"] + BASE_EXCLUDE_FIELD
 
 
 class PutNoteBookResponseSchema(ModelSchema):
@@ -43,19 +45,19 @@ class GetNoteBookResponseSchema(ModelSchema):
 
     class Meta:
         model = models.NoteBookModel
-        exclude: ClassVar = [
-            "created_at",
-            "created_by_user",
-            "updated_at",
-            "updated_by_user",
-            "is_delete",
-            "deleted_at",
-            "deleted_by_user",
-        ]
+        exclude = BASE_EXCLUDE_FIELD
 
 
-class CreateNoteRequestSchema(ModelSchema):
-    """Create note request schema."""
+class PostNoteRequestSchema(ModelSchema):
+    """Post note request schema."""
+
+    class Meta:
+        model = models.NoteModel
+        exclude = ["id"] + BASE_EXCLUDE_FIELD
+
+
+class PostNoteResponseSchema(ModelSchema):
+    """Post note response schema."""
 
     class Meta:
         model = models.NoteModel
@@ -67,7 +69,28 @@ class PutNoteRequestSchema(ModelSchema):
 
     class Meta:
         model = models.NoteModel
+        exclude = ["id"] + BASE_EXCLUDE_FIELD
+
+
+class PutNoteResponseSchema(ModelSchema):
+    """Put note response schema."""
+
+    class Meta:
+        model = models.NoteModel
         exclude = BASE_EXCLUDE_FIELD
+
+
+class GetNoteFilterSchema(Schema):
+    """Get note request schema."""
+
+    all: bool = True
+
+    note_book_id: UUID = None  # type: ignore
+    is_archived: bool = False
+    is_trash: bool = False
+
+    class Meta:
+        fields_optional = ["note_book_id", "is_archived", "is_trash"]
 
 
 class GetNoteResponseSchema(ModelSchema):
@@ -76,3 +99,18 @@ class GetNoteResponseSchema(ModelSchema):
     class Meta:
         model = models.NoteModel
         exclude = BASE_EXCLUDE_FIELD
+
+
+class PatchNoteRequestSchema(ModelSchema):
+    """Patch note request schema."""
+
+    class Meta:
+        model = models.NoteModel
+        exclude = ["id"] + BASE_EXCLUDE_FIELD
+        fields_optional = ["title", "content", "is_archived", "is_trash", "is_pinned"]
+
+
+class GetNoteByNoteBookRequestSchema(Schema):
+    """Get note by note book request schema."""
+
+    note_book_id: UUID
