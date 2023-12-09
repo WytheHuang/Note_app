@@ -1,0 +1,71 @@
+[tool.poetry]
+authors = ["WytheHuang <wythehuang@icloud.com>"]
+description = ""
+name = "frontend-streamlit"
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "^1.29.0"
+
+[tool.poetry.group.lint.dependencies]
+black = "^23.11.0"
+ruff = "^0.1.7"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.ruff]
+exclude = [
+  ".venv",
+  "_venv",
+  "venv",
+  ".git",
+  ".vscode",
+  "jet",
+  "*/migrations/*",
+]
+ignore = [
+  # https://docs.astral.sh/ruff/rules/#rules
+  "D100",
+  "D104",
+  "D106",
+  "E501",
+  "DJ001",
+  "Q000",
+  "TID252",
+  "ERA",
+  "TCH",
+  "EM102",
+  "PGH003",
+  "ANN101",
+  "ANN102",
+  "ANN201",
+  "ANN401",
+  "TRY003",
+  "EM101",
+  "TD003",
+  "A003",
+]
+line-length = 120
+select = [
+  # https://docs.astral.sh/ruff/rules/#rules
+  "ALL",
+]
+target-version = "py311"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.isort]
+force-single-line = true
+lines-after-imports = 2
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
