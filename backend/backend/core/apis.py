@@ -122,7 +122,7 @@ class BaseEditApiController:
             raise Http401UnauthorizedException
 
         try:
-            model = self.Model.objects.select_for_update().get(  # type: ignore
+            model = self.Model.objects.get(  # type: ignore
                 id=pk,
             )
         except self.Model.DoesNotExist as err:  # type: ignore

@@ -182,7 +182,7 @@ class NoteController(BaseEditApiController):
         note_book_id = request_body.pop("note_book")
 
         try:
-            model = await sync_to_async(self.Model.objects.select_for_update().get)(  # type: ignore
+            model = await sync_to_async(self.Model.objects.get)(  # type: ignore
                 id=pk,
             )
         except self.Model.DoesNotExist as err:  # type: ignore
@@ -218,28 +218,25 @@ class NoteController(BaseEditApiController):
     )
     async def patch(self, request: ASGIRequest, pk: UUID, body: schemas.PatchNoteRequestSchema) -> schemas.PutNoteResponseSchema:
         """Update note."""
+        if isinstance(request.user, AnonymousUser):
+            raise Http401UnauthorizedException
+
+        request_body = body.dict()
+        request_body["note_book_id"] = request_body.pop("note_book")
+
         try:
-            if isinstance(request.user, AnonymousUser):
-                raise Http401UnauthorizedException
+            model = await sync_to_async(self.Model.objects.get)(  # type: ignore
+                id=pk,
+            )
+        except self.Model.DoesNotExist as err:  # type: ignore
+            raise Http404NotFoundException
 
-            request_body = body.dict()
-            request_body["note_book_id"] = request_body.pop("note_book")
+        for k, v in request_body.items():
+            if v is not None and getattr(model, k) != v:
+                setattr(model, k, v)
 
-            try:
-                model = await sync_to_async(self.Model.objects.select_for_update().get)(  # type: ignore
-                    id=pk,
-                )
-            except self.Model.DoesNotExist as err:  # type: ignore
-                raise Http404NotFoundException
+        await sync_to_async(model.save)(request.user)
 
-            for k, v in request_body.items():
-                if v is not None and getattr(model, k) != v:
-                    setattr(model, k, v)
-
-            await sync_to_async(model.save)(request.user)
-        except Exception as err:
-            print(err)
-            raise err
         return model
 
     @route.patch(
@@ -256,7 +253,7 @@ class NoteController(BaseEditApiController):
             raise Http401UnauthorizedException
 
         try:
-            model = await sync_to_async(self.Model.objects.select_for_update().get)(  # type: ignore
+            model = await sync_to_async(self.Model.objects.get)(  # type: ignore
                 id=pk,
             )
         except self.Model.DoesNotExist as err:  # type: ignore
