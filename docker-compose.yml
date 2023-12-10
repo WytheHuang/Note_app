@@ -1,7 +1,10 @@
 services:
   backend:
-    image: note_app
+    image: note_app_backend
     ports:
       - "8080:8080"
     volumes:
       - ~/Note_app/backend/logs:./backend/logs
+    environment:
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8080
