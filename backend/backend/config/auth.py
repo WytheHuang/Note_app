@@ -1,10 +1,17 @@
 from ninja import Schema
+from ninja import Form
 from ninja_extra import ControllerBase
 from ninja_extra import api_controller
 from ninja_extra import route
 from ninja_jwt.schema_control import SchemaControl
 from ninja_jwt.settings import api_settings
 
+from django.contrib.auth.hashers import make_password
+
+
+from core import schemas
+from core import exceptions
+from core.models import User
 
 schema = SchemaControl(api_settings)
 
@@ -63,3 +70,25 @@ class AuthController(ControllerBase):
             type[Schema]: verify token.
         """
         return token.to_response_schema()
+
+    @route.post(
+        "/register",
+        response={
+            200: schemas.UserRigisterResponseSchema,
+            400: schemas.Http400BadRequestSchema
+        },
+        url_name="auth_register",
+    )
+    def registe_user(self, body:Form[schemas.UserRigisterRequestSchema]):  # type: ignore
+        """Register user."""
+        if User.objects.filter(email=body.email).exists():
+            raise exceptions.Http400BadRequestException("Email already exists")
+        if body.password != body.password_confirm:
+            raise exceptions.Http400BadRequestException("Password and confirm password must be the same")
+
+        User.objects.create(
+            email=body.email,
+            password=make_password(body.password),
+        )
+
+        return {"email":body.email}

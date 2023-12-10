@@ -50,7 +50,7 @@ class NoteModel(BaseModel):
     is_archived = models.BooleanField(default=False)
     is_trash = models.BooleanField(default=False)
 
-    note_book = models.ForeignKey(NoteBookModel, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    note_book = models.ForeignKey(NoteBookModel, on_delete=models.SET_NULL, default=None, null=True, blank=True)
 
     class PermissionOptions(models.IntegerChoices):
         """Permission options."""

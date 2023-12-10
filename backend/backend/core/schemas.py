@@ -29,3 +29,17 @@ class BaseResponseSchema(Schema):
     """Base schema for response."""
 
     msg: str
+
+
+class UserRigisterRequestSchema(Schema):
+    """User register request schema."""
+
+    email: str
+    password: str
+    password_confirm: str
+
+
+class UserRigisterResponseSchema(Schema):
+    """User register response schema."""
+
+    email: str

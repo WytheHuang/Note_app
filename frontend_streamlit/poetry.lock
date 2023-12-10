@@ -799,6 +799,20 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "pytz"
 version = "2023.3.post1"
 description = "World timezone definitions, modern and historical"
@@ -1018,6 +1032,20 @@ files = [
     {file = "smmap-5.0.1-py3-none-any.whl", hash = "sha256:e6d8668fa5f93e706934a62d7b4db19c8d9eb8cf2adbb75ef1b675aa332b69da"},
     {file = "smmap-5.0.1.tar.gz", hash = "sha256:dceeb6c0028fdb6734471eb07c0cd2aae706ccaecab45965ee83f11c8d3b1f62"},
 ]
+
+[[package]]
+name = "st-pages"
+version = "0.4.5"
+description = "An experimental version of Streamlit Multi-Page Apps"
+optional = false
+python-versions = ">=3.8, !=2.7.*, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, !=3.6.*, !=3.7.*"
+files = [
+    {file = "st_pages-0.4.5-py3-none-any.whl", hash = "sha256:7cc0c9137bc2a3aba2c7918f76a9b220673b4344762544ebf5c5e56d16a6f360"},
+    {file = "st_pages-0.4.5.tar.gz", hash = "sha256:0b95b2ae53e91f9922f2f254b356e1063981b5fcc89a48c4b89011806ccda465"},
+]
+
+[package.dependencies]
+streamlit = ">=1.10.0"
 
 [[package]]
 name = "streamlit"
@@ -1248,4 +1276,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "0c43ba4aa8fbbee41f513ef918395981ded0b05ff76036c942cedb98b465a7a1"
+content-hash = "fbeee28f713bba1be8dd8d7ac8405dfae098282f96738c4fb52332d892167d0a"

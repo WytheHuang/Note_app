@@ -9,6 +9,8 @@ version = "0.1.0"
 python = "^3.11"
 streamlit = "^1.29.0"
 watchdog = "^3.0.0"
+python-dotenv = "^1.0.0"
+st-pages = "^0.4.5"
 
 [tool.poetry.group.lint.dependencies]
 black = "^23.11.0"
