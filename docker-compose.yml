@@ -8,5 +8,5 @@ services:
     environment:
       - SERVER_HOST=0.0.0.0
       - SERVER_PORT=8080
-      - DJANGO_SETTINGS_MODULE="backend.config.settings.production"
+      - DJANGO_SETTINGS_MODULE=backend.config.settings.production
       - DOT_ENV_PATH=.env.prod
