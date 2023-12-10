@@ -218,26 +218,28 @@ class NoteController(BaseEditApiController):
     )
     async def patch(self, request: ASGIRequest, pk: UUID, body: schemas.PatchNoteRequestSchema) -> schemas.PutNoteResponseSchema:
         """Update note."""
-        if isinstance(request.user, AnonymousUser):
-            raise Http401UnauthorizedException
-
-        request_body = body.dict()
-        print(request_body)
-        request_body["note_book_id"] = request_body.pop("note_book")
-
         try:
-            model = await sync_to_async(self.Model.objects.select_for_update().get)(  # type: ignore
-                id=pk,
-            )
-        except self.Model.DoesNotExist as err:  # type: ignore
-            raise Http404NotFoundException
+            if isinstance(request.user, AnonymousUser):
+                raise Http401UnauthorizedException
 
-        for k, v in request_body.items():
-            if v is not None and getattr(model, k) != v:
-                setattr(model, k, v)
+            request_body = body.dict()
+            request_body["note_book_id"] = request_body.pop("note_book")
 
-        await sync_to_async(model.save)(request.user)
+            try:
+                model = await sync_to_async(self.Model.objects.select_for_update().get)(  # type: ignore
+                    id=pk,
+                )
+            except self.Model.DoesNotExist as err:  # type: ignore
+                raise Http404NotFoundException
 
+            for k, v in request_body.items():
+                if v is not None and getattr(model, k) != v:
+                    setattr(model, k, v)
+
+            await sync_to_async(model.save)(request.user)
+        except Exception as err:
+            print(err)
+            raise err
         return model
 
     @route.patch(
@@ -257,7 +259,7 @@ class NoteController(BaseEditApiController):
             model = await sync_to_async(self.Model.objects.select_for_update().get)(  # type: ignore
                 id=pk,
             )
-        except self.Model.DoesNotExist as err: # type: ignore
+        except self.Model.DoesNotExist as err:  # type: ignore
             raise Http404NotFoundException
 
         model.note_book_id = None
