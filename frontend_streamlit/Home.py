@@ -1,18 +1,24 @@
 import streamlit as st
 
-from st_pages import Page
-from st_pages import show_pages
-from st_pages import hide_pages
-
-import config
 from src import utils
+
+
+def login_func(email: str, pwd: str) -> str | None:
+    token = utils.login(email, pwd)  # type: ignore
+    if token is not None:
+        st.session_state["token"] = token
+        st.session_state["isLogin"] = True
+    else:
+        st.error("Login failed, please try again.")
+
 
 st.set_page_config(
     page_title="Note App",
     layout="wide",
 )
 
-st.session_state["want_registe"] = False if "want_registe" not in st.session_state else st.session_state["want_registe"]
+st.session_state["want_register"] = False if "want_register" not in st.session_state else st.session_state["want_register"]
+st.session_state["just_sign_up"] = False if "just_sign_up" not in st.session_state else st.session_state["just_sign_up"]
 st.session_state["isLogin"] = False if "isLogin" not in st.session_state else st.session_state["isLogin"]
 st.session_state["token"] = "" if "token" not in st.session_state else st.session_state["token"]
 st.session_state["first_render_note_column"] = (
@@ -25,28 +31,35 @@ st.session_state["first_render_note_content_column"] = (
 st.sidebar.markdown("# Note App")
 
 if not st.session_state["isLogin"]:
-    if not st.session_state["want_registe"]:
+    email_preset = None
+    if not st.session_state["want_register"]:
+        if st.session_state["just_sign_up"]:
+            st.success("Register success, please login.")
+            email_preset = st.session_state["just_sign_up"]
+            st.session_state["just_sign_up"] = False
+
         col1, col2 = st.columns(2)
         with col1:
-            email = st.text_input("Username or email", key="username")
+            email = st.text_input("email", key="user_email", value=email_preset)
         with col2:
-            pwd = st.text_input("Password", key="password", type="password")
+            pwd = st.text_input(
+                "Password",
+                key="password",
+                type="password",
+                on_change=lambda: login_func(st.session_state["user_email"], st.session_state["password"]),  # type: ignore
+            )
 
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("Login", key="login"):
-                token = utils.login(email, pwd)
-                if token is not None:
-                    st.session_state["token"] = token
-                    st.session_state["isLogin"] = True
-
-                    st.rerun()
-                else:
-                    st.error("Login failed, please try again.")
+            st.button(
+                "Login",
+                key="login",
+                on_click=lambda: login_func(st.session_state["user_email"], st.session_state["password"]),  # type: ignore
+            )
 
         with col2:
             if st.button("Register", key="register"):
-                st.session_state["want_registe"] = True
+                st.session_state["want_register"] = True
 
                 st.rerun()
     else:
@@ -56,10 +69,23 @@ if not st.session_state["isLogin"]:
             pwd_confirm = st.text_input("Confirm Password", key="password_confirm", type="password")
 
             if st.form_submit_button("Register"):
-                if pwd != pwd_confirm:
+                if "@" not in email:
+                    st.error("Email is not valid.")
+                elif pwd != pwd_confirm:
                     st.error("Password and Confirm Password are not the same.")
                 else:
-                    ...
+                    result = utils.register(email, pwd, pwd_confirm)
+                    if result == "200":
+                        st.session_state["want_register"] = False
+                        st.session_state["just_sign_up"] = email
+                        st.rerun()
+                    else:
+                        st.error(result["detail"])  # type: ignore
+
+        if st.button("Already have an account? Login", key="login"):
+            st.session_state["want_register"] = False
+
+            st.rerun()
 else:
     with st.sidebar:
         st.markdown("## Note Book")

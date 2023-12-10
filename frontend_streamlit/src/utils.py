@@ -18,6 +18,25 @@ def login(email: str, pwd: str) -> str | None:
         return None
 
 
+def register(email: str, pwd: str, pwd_2: str) -> str | dict[str, Any]:
+    res = requests.post(
+        f"{config.API_ROOT}/auth/register",
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data={
+            "email": email,
+            "password": pwd,
+            "password_confirm": pwd_2,
+        },
+    )
+
+    if res.status_code == 200:
+        return "200"
+    else:
+        return res.json()
+
+
 def get_notebook_list(access_token: str) -> list[dict[str, str]]:
     res = requests.get(
         f"{config.API_ROOT}/notebooks",
@@ -137,6 +156,7 @@ def update_notebook_title(access_token: str, notebook_id: str, new_title: str) -
     )
 
     return res.status_code == 200
+
 
 def delete_notebook(access_token: str, notebook_id: str) -> bool:
     res = requests.delete(
