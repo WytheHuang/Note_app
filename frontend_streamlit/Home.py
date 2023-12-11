@@ -236,7 +236,7 @@ else:
                 st.button(
                     "Archive",
                     key="move_archive",
-                    disabled=True if st.session_state["notes"]["is_archive"] else False,  # type: ignore
+                    disabled=True if st.session_state["notes"]["is_archived"] else False,  # type: ignore
                     on_click=lambda: utils.move_note_to_archive(st.session_state["token"], id),  # type: ignore
                 )
             with sub_col2:
