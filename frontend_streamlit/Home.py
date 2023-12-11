@@ -243,7 +243,7 @@ else:
                 st.button(
                     "Move to Trash",
                     key="move_trash",
-                    disabled=True if st.session_state["notes"]["is_archive"] == "trash" else False,
+                    disabled=True if st.session_state["notes"]["is_archived"] == "trash" else False,
                     on_click=lambda: utils.move_note_to_trash(st.session_state["token"], id),  # type: ignore
                 )  # type: ignore
             with sub_col3:
