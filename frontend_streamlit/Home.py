@@ -173,7 +173,7 @@ else:
         )
 
         st.markdown("## Notes")
-        st.write(st.session_state["notebooks"])
+        # st.write(st.session_state["notebooks"])
 
         st.radio(
             "Notes",
@@ -196,7 +196,7 @@ else:
 
     with col2:
         st.markdown("## Note Content")
-        st.write(st.session_state["notes"])
+        # st.write(st.session_state["notes"])
 
         if st.session_state["notes"] is not None:
             id, in_notebook, note_title, note_content = utils.unpack_note_content(st.session_state["notes"])
