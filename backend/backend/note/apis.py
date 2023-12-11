@@ -139,9 +139,7 @@ class NoteController(BaseEditApiController):
 
         filter_dict = filter.dict()
         if filter.all:
-            model = await sync_to_async(self.Model.objects.filter)(  # type: ignore
-                created_by_user_id=request.user.id,  # type: ignore
-            )
+            filter_dict = {}
         elif filter.is_archived or filter.is_trash:
             filter_dict.pop("all")
             filter_dict.pop("note_book_id")
