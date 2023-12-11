@@ -137,14 +137,17 @@ class NoteController(BaseEditApiController):
         if isinstance(request.user, AnonymousUser):
             raise Http401UnauthorizedException
 
-        filter_dict = filter.dict()
         if filter.all:
             filter_dict = {}
         elif filter.is_archived or filter.is_trash:
-            filter_dict.pop("all")
-            filter_dict.pop("note_book_id")
+            filter_dict = {
+                "is_archived": filter.is_archived,
+                "is_trash": filter.is_trash,
+            }
         else:
-            filter_dict.pop("all")
+            filter_dict = {
+                "note_book_id": filter.note_book_id,
+            }
 
         model = await sync_to_async(self.Model.objects.filter)(  # type: ignore
             created_by_user_id=request.user.id,  # type: ignore
