@@ -144,6 +144,8 @@ class NoteController(BaseEditApiController):
         else:
             filter_dict = filter.dict()
             filter_dict.pop("all")
+            if filter_dict["note_book_id"] is None:
+                filter_dict.pop("note_book_id")
             model = await sync_to_async(self.Model.objects.filter)(  # type: ignore
                 created_by_user_id=request.user.id,  # type: ignore
                 **filter_dict,
