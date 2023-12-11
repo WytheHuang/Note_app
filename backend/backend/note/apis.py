@@ -142,12 +142,8 @@ class NoteController(BaseEditApiController):
         elif filter.is_archived or filter.is_trash:
             filter_dict = {
                 "is_archived": filter.is_archived,
-            }
-        elif filter.is_trash:
-            filter_dict = {
                 "is_trash": filter.is_trash,
             }
-
         else:
             filter_dict = {
                 "note_book_id": filter.note_book_id,
