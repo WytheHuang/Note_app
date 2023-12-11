@@ -10,7 +10,6 @@ ALLOWED_HOSTS = [
     "localhost",
     "0.0.0.0",
     "127.0.0.1",
-    "20.2.65.208",
 ]  # noqa: S104
 
 # DB
