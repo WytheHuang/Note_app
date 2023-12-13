@@ -25,3 +25,16 @@ can click this [lick](http://noteapp.eastasia.cloudapp.azure.com:8501) to see th
 
 #### react.js
 - not done yet
+
+
+## need environment variables
+### backend
+- DOT_ENV_PATH: the path of .env file, default is "./backend/.env.local"
+- DJANGO_SETTINGS_MODULE: the path of settings.py, default is "backend.config.settings.local"
+
+### frontend
+#### streamlit
+- DOT_ENV_PATH: the path of .env file, default is "./frontend_streamlit/.env.local"
+
+#### react.js
+- not done yet
